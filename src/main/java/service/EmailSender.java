@@ -3,7 +3,6 @@ package service;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.Properties;
-import javax.
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -31,29 +30,29 @@ public class EmailSender {
         //props.put("mail.smtp.starttls.enable", "true");
     }
 
-    public void send(String subject, String text, String fromEmail, String toEmail) {
-        Session session = Session.getInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
-
-        try {
-            Message message = new MimeMessage(session);
-            //от кого
-            message.setFrom(new InternetAddress(username));
-            //кому
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-            //Заголовок письма
-            message.setSubject(subject);
-            //Содержимое
-            message.setText(text);
-
-            //Отправляем сообщение
-            Transport.send(message);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
+//    public void send(String subject, String text, String fromEmail, String toEmail) {
+//        Session session = Session.getInstance(props, new Authenticator() {
+//            protected PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication(username, password);
+//            }
+//        });
+//
+//        try {
+//            Message message = new MimeMessage(session);
+//            //от кого
+//            message.setFrom(new InternetAddress(username));
+//            //кому
+//            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+//            //Заголовок письма
+//            message.setSubject(subject);
+//            //Содержимое
+//            message.setText(text);
+//
+//            //Отправляем сообщение
+//            Transport.send(message);
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

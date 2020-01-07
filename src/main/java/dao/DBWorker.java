@@ -1,12 +1,15 @@
 package dao;
 
-import users.UsersTlgBot;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
-public interface DbWorker {
+public interface DBWorker {
 
-    public void createTelegramBotDb();
+      public void addTransactionFromUser(Message message );
 
-    //public void writeUpdateToDb(long update_id,long user_id , String user_name, String user_text);
+      public int checkScenarioFlag(Message message);
 
-    //public UsersTlgBot getInfoAboutUser();
+      public boolean checkUserRights(Message message);
+
+      public void setScenarioFlag(Message message, int scenario_flag);
 }
+

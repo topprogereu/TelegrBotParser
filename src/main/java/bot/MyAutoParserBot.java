@@ -1,6 +1,6 @@
 package bot;
 
-import config.SQLEngine;
+import dao.SQLEngine;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -10,7 +10,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import service.AutoRiaService;
-import service.EmailSender;
 import service.ExchangeRateWorker;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class MyAutoParserBot extends TelegramLongPollingBot {
     }
 
     public String getBotToken() {
-        return "817526596:AAHIB9_-KnUhYWhFqdgeXsUo2TdPAzu1AHo";
+        return "123";
     }
 
     private static boolean isCommandForOther(String text) {
@@ -51,9 +50,21 @@ public class MyAutoParserBot extends TelegramLongPollingBot {
 
     public void handleIncomingMessage(Message message) throws TelegramApiException {
 
-        // TODO Проверяем сценарий в БД
-        sqlEngine.addTransactionFromUser(message);
         SendMessage sendMessage = new SendMessage();
+        // Записываем действие
+        sqlEngine.addTransactionFromUser(message);
+        // Проверяем права
+        if(!sqlEngine.checkUserRights(message))
+        {
+            sendMessage.setText("У вас нету прав на использование");
+            sendMessage.setChatId(message.getChatId());
+            execute(sendMessage);
+            return;
+        }
+
+        // Проверяем это сценарий ?
+        int scenario_step = sqlEngine.checkScenarioFlag(message);
+        System.out.println("scenario: "+scenario_step);
 
         if (message.getText().equals("/start")) {
             sendMessage.setText("Без понтов, без рекламы, чисто пользуйся и хорошего настроения)");
@@ -87,12 +98,14 @@ public class MyAutoParserBot extends TelegramLongPollingBot {
         }
         if(message.getText().equals("Поиск на Autoria"))
         {
+            sqlEngine.setScenarioFlag(message,1);
             AutoRiaService.getAverageCoastAboutAuto();
             sendMessage.setText("Не реализовано");
             sendMessage.setChatId(message.getChatId());
         }
         if(message.getText().equals("Поиск на Rst"))
         {
+
             sendMessage.setText("Не реализовано");
             sendMessage.setChatId(message.getChatId());
         }
@@ -104,9 +117,9 @@ public class MyAutoParserBot extends TelegramLongPollingBot {
         if(message.getText().equals("Отправка на email"))
         {
             sendMessage.setText("Не реализовано");
-            sendMessage.setChatId(message.getChatId());
-            EmailSender emailSender = new EmailSender("topprogereu@gmail.com","iqurjxupjpgborvt");
-            emailSender.send("Hi","test","topprogereu@gmail.com","Pavel.Kosinskij@privatbank.ua");
+//            sendMessage.setChatId(message.getChatId());
+//            EmailSender emailSender = new EmailSender("topprogereu@gmail.com","iqurjxupjpgborvt");
+//            emailSender.send("Hi","test","topprogereu@gmail.com","Pavel.Kosinskij@privatbank.ua");
         }
 
 
