@@ -1,5 +1,6 @@
 package bot;
 
+import config.Resource;
 import dao.SQLEngine;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -39,7 +40,7 @@ public class MyAutoParserBot extends TelegramLongPollingBot {
     }
 
     public String getBotToken() {
-        return "123";
+        return "817526596:AAHIB9_-KnUhYWhFqdgeXsUo2TdPAzu1AHo";
     }
 
     private static boolean isCommandForOther(String text) {
@@ -61,6 +62,8 @@ public class MyAutoParserBot extends TelegramLongPollingBot {
             execute(sendMessage);
             return;
         }
+
+        Resource resource = Resource.getInstance();
 
         // Проверяем это сценарий ?
         int scenario_step = sqlEngine.checkScenarioFlag(message);

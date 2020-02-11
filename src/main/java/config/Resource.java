@@ -1,9 +1,12 @@
 package config;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
+import java.util.Scanner;
 
 public class Resource {
 
@@ -13,28 +16,21 @@ public class Resource {
     private String password;
 
     private Resource() {
-        Properties props =  new Properties();
-        try
-        {
-            InputStream in = Files.newInputStream(Paths.get("database.properties"));
-            System.out.println(in.read());
-            props.load(in);
-
-        }
-        catch(Exception e)
-        {
+        Properties props = new Properties();
+        try {
+            FileInputStream fis = new FileInputStream("src/main/resources/database.properties");
+            props.load(fis);
+        } catch (Exception e) {
             System.out.println("Не удалось прочитать файл");
         }
-         url = props.getProperty("url");
-        System.out.println("Resource.getUrl "+url);
-         username = props.getProperty("username");
-         password = props.getProperty("password");
+        url = props.getProperty("url");
+        username = props.getProperty("username");
+        password = props.getProperty("password");
     }
 
-    public static Resource getInstance()
-    {
-        if (res != null)
-        res = new Resource();
+    public static Resource getInstance() {
+        if (res == null)
+            res = new Resource();
         return res;
     }
 

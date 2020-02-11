@@ -2,3 +2,4 @@
 /target/*
 /upload_files/*
 *.iml
+/src/main/resources/*
